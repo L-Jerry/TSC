@@ -36,6 +36,7 @@ for i in dict1:
 
 signals = {0: 1, 1: 2, 2: 0, 8: 1, 9: 2, 10: 0}  # 0,8：车辆右转信号，1,9：车辆直行信号，2,10：车辆左转信号
 
+
 class Simulation:
     def __init__(self):
         self.epoch = 0
