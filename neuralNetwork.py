@@ -7,6 +7,7 @@
 import tensorflow as tf
 import numpy as np
 import random
+import os
 
 ACTIONS = 8
 GAMMA = 0.99
@@ -27,6 +28,8 @@ class NeuralNetwork:
         self.train_step = tf.train.AdamOptimizer(1e-6).minimize(self.cost)
         self.sess.run(tf.global_variables_initializer())
         self.saver = tf.train.Saver()
+        if not os.path.exists('saved_networks'):
+            os.mkdir('saved_networks')
 
     def build_net(self):  # 构建神经网络
         s_t_flatten = tf.reshape(self.s_t, [-1, 20, 1800])  # 展平
