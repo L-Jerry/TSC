@@ -1,7 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*- 
 # @Time : 2019/8/10 14:39 
-# @Author : Jerry
+# @Author : Jerry 
 # @File : main.py
 
 from simulation import Simulation
