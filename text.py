@@ -8,7 +8,7 @@ import traci
 import os
 
 laneID = ['1si_0', '1si_1', '1si_2', '2si_0', '2si_1', '2si_2',
-          '3si_0', '3si_1', '3si_2', '4si_0', '4si_1', '4si_2', ]
+          '3si_0', '3si_1', '3si_2', '4si_0', '4si_1', '4si_2']
 
 
 class Text:
