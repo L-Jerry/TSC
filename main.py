@@ -1,7 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding: utf-8 -*- 
 # @Time : 2019/8/10 14:39 
-# @Author : Jerry 
+# @Author : Jerry
 # @File : main.py
 
 from simulation import Simulation
@@ -10,26 +10,30 @@ from neuralNetwork import NeuralNetwork
 import numpy as np
 from multiprocessing import Process, Manager, Lock
 from multiprocessing.managers import BaseManager
+import random
 
 
 def train_network(ls, nn, lock):
     while True:
-        if len(ls) >= 32:
+        if len(ls) >= 20000:
             lock.acquire()
-            s_j_batch = [b[0] for b in ls]
-            s1_j_batch = [b[1] for b in ls]
-            last_a_t = [b[2] for b in ls]
-            a_t = [b[3] for b in ls]
-            r_batch = [b[4] for b in ls]
-            s_j1_batch = [b[5] for b in ls]
-            s1_j1_batch = [b[6] for b in ls]
-            del ls[:]
+            indexes = random.sample(range(len(ls)), 64)
+            sample_batch = [ls[i] for i in indexes]
+            del ls[:len(ls) - 20000]
             lock.release()
+            s_j_batch = [b[0] for b in sample_batch]
+            s1_j_batch = [b[1] for b in sample_batch]
+            last_a_t = [b[2] for b in sample_batch]
+            a_t = [b[3] for b in sample_batch]
+            r_batch = [b[4] for b in sample_batch]
+            s_j1_batch = [b[5] for b in sample_batch]
+            s1_j1_batch = [b[6] for b in sample_batch]
+
             nn.train_network(s_j_batch, s1_j_batch, last_a_t, a_t, r_batch, s_j1_batch, s1_j1_batch)
 
 def start_simulation(ls, nn, process, save, lock):
     INITIAL_EPSILON = 0.01
-    FINAL_EPSILON = 0.0001
+    FINAL_EPSILON = 0.0007
     epsilon = INITIAL_EPSILON
     ACTIONS = 8
     epoch = 0
@@ -130,7 +134,7 @@ def start_simulation(ls, nn, process, save, lock):
 
 if __name__ == '__main__':
     with open('throughput.csv', 'w') as f:
-        f.write('process,epoch,throughput,allThroughtput\n')
+        f.write('epoch,process,throughput,allThroughtput\n')
     BaseManager.register('NeuralNetwork', NeuralNetwork)
     manager = BaseManager()
     manager.start()
